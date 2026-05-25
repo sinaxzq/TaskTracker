@@ -31,3 +31,7 @@ add_executable(TaskTrackerTests
 target_link_libraries(TaskTrackerTests PRIVATE
     TaskTrackerCore
 )
+
+enable_testing()
+
+add_test(NAME TaskManagerTests COMMAND TaskTrackerTests)
