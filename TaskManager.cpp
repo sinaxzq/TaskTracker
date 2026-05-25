@@ -71,3 +71,22 @@ bool TaskManager::renameTask(int id , std::string newTitle)
 	return false;
 }
 
+int TaskManager::removeTasksByStatus(TaskStatus status)
+{
+	int removedCount = 0;
+	
+	for (std::vector<Task>::iterator it = tasks.begin(); it != tasks.end();)
+	{
+		if (it->getStatus() == status)
+		{
+			it=tasks.erase(it);
+			removedCount++;
+		}
+		else
+		{
+			it++;
+		}
+	}
+
+	return removedCount;
+}

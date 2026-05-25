@@ -23,4 +23,6 @@ public:
 	const std::vector<Task>& getTasks() const;
 
 	bool renameTask(int id , std::string newTitle);
+
+	int removeTasksByStatus(TaskStatus status);
 };

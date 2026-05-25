@@ -87,6 +87,40 @@ void testRenameTaskInvalidId()
 	assert(manager.getTasks()[0].getTitle() == "First");
 }
 
+void testRemoveTasksByStatus()
+{
+	TaskManager manager;
+	int firstId = manager.addTask("First").getId();
+	int secondId = manager.addTask("Second").getId();
+	int thirdId = manager.addTask("Third").getId();
+	int fourthId = manager.addTask("Fourth").getId();
+
+	manager.changeStatus(secondId , TaskStatus::Done);
+	manager.changeStatus(fourthId , TaskStatus::Done);
+
+	int count = manager.removeTasksByStatus(TaskStatus::Done);
+
+	assert(count == 2);
+	assert(manager.getTasks().size() == 2);
+
+	assert(manager.findTask(firstId) != nullptr);
+	assert(manager.findTask(secondId) == nullptr);
+	assert(manager.findTask(thirdId) != nullptr);
+	assert(manager.findTask(fourthId) == nullptr);
+}
+
+void testRemoveTasksByStatusNoMatches()
+{
+	TaskManager manager;
+	int firstId = manager.addTask("First").getId();
+
+	int count = manager.removeTasksByStatus(TaskStatus::Done);
+
+	assert(count == 0);
+	assert(manager.getTasks().size() == 1);
+	assert(manager.findTask(firstId) != nullptr);
+}
+
 void runTaskManagerTests()
 {
 	testAddTask();
@@ -96,5 +130,7 @@ void runTaskManagerTests()
 	testRemoveTaskInvalidId();
 	testRenameTask();
 	testRenameTaskInvalidId();
+	testRemoveTasksByStatus();
+	testRemoveTasksByStatusNoMatches();
 }
 
