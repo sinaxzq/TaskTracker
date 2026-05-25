@@ -21,4 +21,6 @@ public:
 	bool changeStatus(int id , TaskStatus newStatus);
 
 	const std::vector<Task>& getTasks() const;
+
+	bool renameTask(int id , std::string newTitle);
 };

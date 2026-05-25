@@ -63,6 +63,30 @@ void testRemoveTaskInvalidId()
 	assert(manager.getTasks().size() == 1);
 }
 
+void testRenameTask()
+{
+	TaskManager manager;
+
+	int firstId = manager.addTask("First").getId();
+	
+	bool renamed = manager.renameTask(firstId, "FirstChanged");
+
+	assert(renamed);
+	assert(manager.findTask(firstId)->getTitle() == "FirstChanged");
+}
+
+void testRenameTaskInvalidId()
+{
+	TaskManager manager;
+
+	int firstId = manager.addTask("First").getId();
+
+	bool renamed = manager.renameTask(999 , "FirstChanged");
+
+	assert(!renamed);
+	assert(manager.getTasks()[0].getTitle() == "First");
+}
+
 void runTaskManagerTests()
 {
 	testAddTask();
@@ -70,4 +94,7 @@ void runTaskManagerTests()
 	testChangeStatusInvalidId();
 	testRemoveTask();
 	testRemoveTaskInvalidId();
+	testRenameTask();
+	testRenameTaskInvalidId();
 }
+

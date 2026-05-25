@@ -58,3 +58,16 @@ const std::vector<Task>& TaskManager::getTasks() const
 	return tasks;
 }
 
+bool TaskManager::renameTask(int id , std::string newTitle)
+{
+	auto ptr = findTask(id);
+
+	if (ptr)
+	{
+		ptr->setTitle(std::move(newTitle));
+		return true;
+	}
+
+	return false;
+}
+
