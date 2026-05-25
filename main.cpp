@@ -1,6 +1,6 @@
 #include "Task.h"
 #include "TaskManager.h"
-#include "TaskManagerTests.h"
+
 
 #include <iostream>
 #include <string>
@@ -13,9 +13,8 @@ void printAllTasks(const TaskManager& manager);
 
 int main()
 {
-	runTaskManagerTests();
 
-	std::cout << "All tests passed\n";
+	std::cout << "main\n";
 
 	return 0;
 }
