@@ -1,0 +1,12 @@
+build/
+out/
+.vs/
+
+*.user
+*.suo
+*.VC.db
+*.VC.VC.opendb
+
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
