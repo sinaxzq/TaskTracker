@@ -17,6 +17,7 @@ endfunction()
 add_library(TaskTrackerCore
     Task.cpp
     TaskManager.cpp
+    TaskStorage.cpp
 )
 
 target_include_directories(TaskTrackerCore PUBLIC
