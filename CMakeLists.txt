@@ -15,6 +15,12 @@ target_include_directories(TaskTrackerCore PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+if(MSVC)
+    target_compile_options(TaskTrackerCore PRIVATE /W4 /WX)
+else()
+    target_compile_options(TaskTrackerCore PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
 add_executable(TaskTrackerApp
     main.cpp
 )
