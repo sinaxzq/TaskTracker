@@ -55,7 +55,7 @@ void testRemoveTaskInvalidId()
 {
 	TaskManager manager;
 
-	int firstId = manager.addTask("First").getId();
+	manager.addTask("First").getId();
 
 	bool removed = manager.removeTask(999);
 
@@ -79,7 +79,7 @@ void testRenameTaskInvalidId()
 {
 	TaskManager manager;
 
-	int firstId = manager.addTask("First").getId();
+	manager.addTask("First").getId();
 
 	bool renamed = manager.renameTask(999 , "FirstChanged");
 

@@ -13,7 +13,6 @@ void printAllTasks(const TaskManager& manager);
 
 int main()
 {
-
 	std::cout << "main\n";
 
 	return 0;
