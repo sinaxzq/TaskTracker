@@ -3,47 +3,44 @@
 #include <string>
 #include <utility>
 
-Task::Task(int id , std::string title) : id(id) , title(std::move(title)), status(TaskStatus::Todo)
-{
-	
-}
+Task::Task(int id, std::string title) : id(id), title(std::move(title)), status(TaskStatus::Todo) {}
 
 int Task::getId() const
 {
-	return id;
+    return id;
 }
 
 const std::string& Task::getTitle() const
 {
-	return title;
+    return title;
 }
 
 TaskStatus Task::getStatus() const
 {
-	return status;
+    return status;
 }
 
 void Task::setTitle(std::string newTitle)
 {
-	title = std::move(newTitle);
+    title = std::move(newTitle);
 }
 
 void Task::setStatus(TaskStatus newStatus)
 {
-	status = newStatus;
+    status = newStatus;
 }
 
 std::string taskStatusToString(TaskStatus status)
 {
-	switch (status)
-	{
-		case TaskStatus::Done:
-			return "Done";
-		case TaskStatus::Todo:
-			return "Todo";
-		case TaskStatus::InProgress:
-			return "InProgress";
-	}
+    switch (status)
+    {
+    case TaskStatus::Done:
+        return "Done";
+    case TaskStatus::Todo:
+        return "Todo";
+    case TaskStatus::InProgress:
+        return "InProgress";
+    }
 
-	return "Unknown";
+    return "Unknown";
 }

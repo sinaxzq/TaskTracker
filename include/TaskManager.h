@@ -7,22 +7,22 @@
 
 class TaskManager
 {
-	std::vector<Task> tasks;
-	int nextId = 1;
+    std::vector<Task> tasks;
+    int nextId = 1;
 
-public:
-	Task& addTask(std::string title);
+  public:
+    Task& addTask(std::string title);
 
-	bool removeTask(int id);
+    bool removeTask(int id);
 
-	Task* findTask(int id);
-	const Task* findTask (int id) const;
+    Task* findTask(int id);
+    const Task* findTask(int id) const;
 
-	bool changeStatus(int id , TaskStatus newStatus);
+    bool changeStatus(int id, TaskStatus newStatus);
 
-	const std::vector<Task>& getTasks() const;
+    const std::vector<Task>& getTasks() const;
 
-	bool renameTask(int id , std::string newTitle);
+    bool renameTask(int id, std::string newTitle);
 
-	int removeTasksByStatus(TaskStatus status);
+    int removeTasksByStatus(TaskStatus status);
 };
