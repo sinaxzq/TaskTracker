@@ -88,6 +88,26 @@ std::optional<int> parseId(const std::string& text)
         return std::nullopt;
     }
 }
+
+std::optional<TaskStatus> parseStatus(const std::string& text)
+{
+    if (text == "todo")
+    {
+        return TaskStatus::Todo;
+    }
+
+    if (text == "progress")
+    {
+        return TaskStatus::InProgress;
+    }
+
+    if (text == "done")
+    {
+        return TaskStatus::Done;
+    }
+
+    return std::nullopt;
+}
 } // namespace
 
 int main(int argc, char* argv[])
@@ -219,7 +239,7 @@ int main(int argc, char* argv[])
             std::cout << "Task not found\n";
             return 1;
         }
-
+        
         if (!saveTasks(manager))
         {
             std::cout << "Failed to save tasks\n";
@@ -227,6 +247,48 @@ int main(int argc, char* argv[])
         }
 
         std::cout << "Task renamed\n";
+        return 0;
+    }
+
+    if (command == "status")
+    {
+        if (argc < 4)
+        {
+            std::cout << "Missing task new title\n";
+            return 1;
+        }
+            
+        std::optional<int> id = parseId(argv[2]);
+
+        if (!id)
+        {
+            std::cout << "Invalid task id\n";
+            return 1;
+        }
+
+        std::optional<TaskStatus> statusId = parseStatus(argv[3]);
+        
+        if (!statusId)
+        {
+            std::cout << "Invalid status\n";
+            return 1;
+        }
+
+        if (!manager.changeStatus(*id, *statusId))
+        {
+            std::cout << "Task not found\n";
+            return 1;
+        }
+
+           if (!saveTasks(manager))
+        {
+            std::cout << "Failed to save tasks\n";
+            return 1;
+        }
+
+        std::cout << "Task status changed\n";
+            return 1;
+        
         return 0;
     }
     std::cout << "Unknown command\n";
