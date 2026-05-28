@@ -92,3 +92,26 @@ int TaskManager::removeTasksByStatus(TaskStatus status)
 
     return removedCount;
 }
+
+void TaskManager::clear()
+{
+    tasks.clear();
+    nextId = 1;
+}
+
+bool TaskManager::addTaskWithId(int id, std::string title, TaskStatus status)
+{
+
+    if (id <= 0 || findTask(id) != nullptr)
+        return false;
+
+    Task& task = tasks.emplace_back(Task(id, std::move(title)));
+    task.setStatus(status);
+
+    if (id >= nextId)
+    {
+        nextId = id + 1;
+    }
+
+    return true;
+}

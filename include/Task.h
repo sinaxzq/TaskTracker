@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 enum class TaskStatus
 {
@@ -10,6 +11,8 @@ enum class TaskStatus
 };
 
 std::string taskStatusToString(TaskStatus status);
+
+std::optional<TaskStatus> taskStatusFromInt(int value);
 
 class Task
 {

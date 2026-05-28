@@ -25,4 +25,8 @@ class TaskManager
     bool renameTask(int id, std::string newTitle);
 
     int removeTasksByStatus(TaskStatus status);
+
+    void clear();
+
+    bool addTaskWithId(int id, std::string title, TaskStatus status);
 };

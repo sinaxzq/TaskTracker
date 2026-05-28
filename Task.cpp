@@ -2,6 +2,7 @@
 
 #include <string>
 #include <utility>
+#include <optional>
 
 Task::Task(int id, std::string title) : id(id), title(std::move(title)), status(TaskStatus::Todo) {}
 
@@ -43,4 +44,19 @@ std::string taskStatusToString(TaskStatus status)
     }
 
     return "Unknown";
+}
+
+std::optional<TaskStatus> taskStatusFromInt(int value)
+{
+    switch (value)
+    {
+    case 0:
+        return TaskStatus::Todo;
+    case 1:
+        return TaskStatus::InProgress;
+    case 2:
+        return TaskStatus::Done;
+    default:
+        return std::nullopt;
+    }
 }

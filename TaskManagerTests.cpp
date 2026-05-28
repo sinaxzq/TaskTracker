@@ -1,7 +1,12 @@
 #include "TaskManagerTests.h"
+#include "Task.h"
 #include "TaskManager.h"
+#include "TaskStorage.h"
 
 #include <cassert>
+#include <cstdio>
+#include <fstream>
+#include <string>
 
 void testAddTask()
 {
@@ -121,7 +126,116 @@ void testRemoveTasksByStatusNoMatches()
     assert(manager.findTask(firstId) != nullptr);
 }
 
-void runTaskManagerTests()
+void testSaveAndLoadTasks()
+{
+    const std::string filename = "task_storage_test.txt";
+
+    std::remove(filename.c_str());
+
+    TaskManager original;
+
+    int firstId = original.addTask("First").getId();
+    int secondId = original.addTask("Second").getId();
+
+    original.changeStatus(firstId, TaskStatus::InProgress);
+    original.changeStatus(secondId, TaskStatus::Done);
+
+    bool saved = saveTasksToFile(original, filename);
+    assert(saved);
+
+    TaskManager loaded;
+
+    bool loadedSuccessfully = loadTasksFromFile(loaded, filename);
+    assert(loadedSuccessfully);
+
+    assert(loaded.getTasks().size() == 2);
+
+    const Task* first = loaded.findTask(firstId);
+    const Task* second = loaded.findTask(secondId);
+
+    assert(first != nullptr);
+    assert(second != nullptr);
+
+    assert(first->getTitle() == "First");
+    assert(first->getStatus() == TaskStatus::InProgress);
+
+    assert(second->getTitle() == "Second");
+    assert(second->getStatus() == TaskStatus::Done);
+
+    std::remove(filename.c_str());
+}
+
+void testMissingFile()
+{
+    const std::string filename = "missing_tasks_file.txt";
+
+    std::remove(filename.c_str());
+
+    TaskManager manager;
+
+    int existingId = manager.addTask("Existing").getId();
+    bool loaded = loadTasksFromFile(manager, filename);
+
+    assert(!loaded);
+
+    Task* existing = manager.findTask(existingId);
+
+    assert(existing != nullptr);
+    assert(existing->getTitle() == "Existing");
+}
+
+void testLoadTasksFromInvalidStatusDoesNotOverwriteManager()
+{
+    const std::string filename = "invalid_status_tasks.txt";
+
+    {
+        std::ofstream file(filename);
+        file << "1;Bad task;99\n";
+    }
+
+    TaskManager manager;
+    int existingId = manager.addTask("Existing").getId();
+
+    bool loaded = loadTasksFromFile(manager, filename);
+
+    assert(!loaded);
+    assert(manager.getTasks().size() == 1);
+
+    const Task* existing = manager.findTask(existingId);
+
+    assert(existing != nullptr);
+    assert(existing->getTitle() == "Existing");
+
+    std::remove(filename.c_str());
+}
+
+void testLoadTasksFromDuplicateIdFails()
+{
+    const std::string filename = "duplicate_id_tasks.txt";
+
+    {
+        std::ofstream file(filename);
+        file << "1;First;0\n";
+        file << "1;Duplicate;2\n";
+    }
+
+    TaskManager manager;
+    int existingId = manager.addTask("Existing").getId();
+
+    bool loaded = loadTasksFromFile(manager, filename);
+
+    assert(!loaded);
+    assert(manager.getTasks().size() == 1);
+
+    const Task* existing = manager.findTask(existingId);
+
+    assert(existing != nullptr);
+    assert(existing->getTitle() == "Existing");
+
+    std::remove(filename.c_str());
+}
+
+    void runTaskManagerTests()
 {
     testAddTask();
     testChangeStatus();
@@ -132,4 +246,8 @@ void runTaskManagerTests()
     testRenameTaskInvalidId();
     testRemoveTasksByStatus();
     testRemoveTasksByStatusNoMatches();
+    testSaveAndLoadTasks();
+    testMissingFile();
+    testLoadTasksFromInvalidStatusDoesNotOverwriteManager();
+    testLoadTasksFromDuplicateIdFails();
 }
