@@ -1,8 +1,11 @@
+#include "Task.h"
 #include "TaskManager.h"
 #include "TaskStorage.h"
 
+#include <cctype>
 #include <filesystem>
 #include <iostream>
+#include <optional>
 #include <string>
 
 namespace
@@ -55,9 +58,29 @@ bool saveTasks(const TaskManager& manager)
 
 std::optional<int> parseId(const std::string& text)
 {
+    if (text.empty())
+    {
+        return std::nullopt;
+    }
+
+    for (char ch : text)
+    {
+        if (ch < '0' || ch > '9')
+        {
+            return std::nullopt;
+        }
+    }
+
     try
     {
-        return std::stoi(text);
+        int id = std::stoi(text);
+
+        if (id <= 0)
+        {
+            return std::nullopt;
+        }
+
+        return id;
     }
     catch (...)
     {
