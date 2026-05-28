@@ -40,6 +40,7 @@ void printUsage()
     std::cout << "  TaskTrackerApp done <id>\n";
     std::cout << "  TaskTrackerApp remove <id>\n";
     std::cout << "  TaskTrackerApp rename <id> \"New title\"\n";
+    std::cout << "  TaskTrackerApp status <id> <todo|progress|done>\n";
 }
 
 bool loadExistingTasks(TaskManager& manager)
@@ -254,10 +255,10 @@ int main(int argc, char* argv[])
     {
         if (argc < 4)
         {
-            std::cout << "Missing task new title\n";
+            std::cout << "Missing task id or status\n";
             return 1;
         }
-            
+
         std::optional<int> id = parseId(argv[2]);
 
         if (!id)
@@ -266,31 +267,30 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        std::optional<TaskStatus> statusId = parseStatus(argv[3]);
-        
-        if (!statusId)
+        std::optional<TaskStatus> status = parseStatus(argv[3]);
+
+        if (!status)
         {
             std::cout << "Invalid status\n";
             return 1;
         }
 
-        if (!manager.changeStatus(*id, *statusId))
+        if (!manager.changeStatus(*id, *status))
         {
             std::cout << "Task not found\n";
             return 1;
         }
 
-           if (!saveTasks(manager))
+        if (!saveTasks(manager))
         {
             std::cout << "Failed to save tasks\n";
             return 1;
         }
 
         std::cout << "Task status changed\n";
-            return 1;
-        
         return 0;
     }
+
     std::cout << "Unknown command\n";
     printUsage();
     return 1;
